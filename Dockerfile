@@ -13,7 +13,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
 VOLUME /data/db
 
 ENV AUTH yes
-ENV STORAGE_ENGINE wiredTiger
+ENV STORAGE_ENGINE mmapv1 
 ENV JOURNALING yes
 
 ADD run.sh /run.sh
