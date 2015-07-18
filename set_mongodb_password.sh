@@ -15,10 +15,10 @@ while [[ RET -ne 0 ]]; do
 done
 
 echo "=> Creating an admin user with a ${_word} password in MongoDB"
-mongo admin --eval "db.createUser({user: 'admin', pwd: '$PASS', roles:[{role:'root',db:'admin'}]});"
+mongo admin --eval "db.createUser({user: 'admin', pwd: '$PASS', roles:[{role:'root',db:'admin'}, { role: 'userAdminAnyDatabase', db: 'admin' } ]});"
 
-mongo icon --eval "db.createUser({user: 'web-app', pwd: '$A_PASS', roles:[{role:'readWrite',db:'icon'}]});"
-mongo icon --eval "db.createUser({user: 'user', pwd: '$U_PASS', roles:[{role:'readWrite',db:'icon'}]});"
+mongo icon -u admin -p $PASS --eval "db.createUser({user: 'web-app', pwd: '$A_PASS', roles:[{role:'readWrite',db:'icon'}]});" --authenticationDatabase admin
+mongo icon -u admin -p $PASS --eval "db.createUser({user: 'user', pwd: '$U_PASS', roles:[{role:'readWrite',db:'icon'}]});" --authenticationDatabase admin
 
 echo "=> Done!"
 touch /data/db/.mongodb_password_set
